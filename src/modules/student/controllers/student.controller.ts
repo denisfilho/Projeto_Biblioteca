@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../../../services/database/app-data-source";
 import { Student } from "../entities/student.entity";
+import bcrypt from "bcrypt";
 
 class StudentController {
   async createStudent(req: Request, res: Response) {
@@ -9,7 +10,7 @@ class StudentController {
       const student = await AppDataSource.getRepository(Student).save({
         cpf: cpf,
         name: name,
-        password: password,
+        password: bcrypt.hashSync(password, 8),
         email: email,
       });
       console.log(`Student created: ${student}`);
