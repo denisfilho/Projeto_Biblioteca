@@ -7,8 +7,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Book } from "../Book/book.entity";
-import { Student } from "../student/entities/student.entity";
+import { Book } from "../../Book/entities/book.entity";
+import { Student } from "../../student/entities/student.entity";
 
 @Entity("reservations")
 export class Reservation {
