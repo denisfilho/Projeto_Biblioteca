@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Reservation } from "../reservations/reservation.entity";
 
 @Entity("books")
 export class Book {
@@ -19,4 +20,7 @@ export class Book {
 
   @Column({ default: 0 })
   reserved_copies: number;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.book)
+  reservations: Reservation[];
 }

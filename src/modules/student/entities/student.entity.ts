@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Reservation } from "../../reservations/reservation.entity";
 
 @Entity("students")
 export class Student {
@@ -13,4 +14,7 @@ export class Student {
 
   @PrimaryColumn({ unique: true })
   email: string;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.book)
+  reservations: Reservation[];
 }
