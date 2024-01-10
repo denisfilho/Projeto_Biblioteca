@@ -35,6 +35,20 @@ class StudentController {
         .json({ ok: false, message: "Erro ao listar todos os estudantes" });
     }
   }
+
+  async findStudentById(req: Request, res: Response) {
+    try {
+      const student = await AppDataSource.getRepository(Student).find({
+        where: { email: req.params.student_email },
+      });
+      return res.status(201).json({ ok: true, student });
+    } catch (error) {
+      console.log("Error in findStudentById");
+      return res
+        .status(400)
+        .json({ ok: false, message: "Erro ao encontrar estudante" });
+    }
+  }
 }
 
 export default new StudentController();
