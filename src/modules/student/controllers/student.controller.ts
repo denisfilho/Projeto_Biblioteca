@@ -45,8 +45,31 @@ class StudentController {
     } catch (error) {
       console.log("Error in findStudentById");
       return res
-        .status(400)
+        .status(500)
         .json({ ok: false, message: "Erro ao encontrar estudante" });
+    }
+  }
+
+  async deleteStudent(req: Request, res: Response) {
+    try {
+      const student = await AppDataSource.getRepository(Student).findOne({
+        where: { email: req.params.student_email },
+      });
+      if (!student) {
+        return res
+          .status(404)
+          .json({ ok: true, message: "Estudante não encontrado" });
+      }
+      await AppDataSource.getRepository(Student).delete(student);
+      console.log(`Student ${student.email} deleted`);
+      return res
+        .status(201)
+        .json({ ok: true, message: "Usuário deletado com sucesso" });
+    } catch (error) {
+      console.log("Error in deleteStudent");
+      return res
+        .status(500)
+        .send({ ok: false, error: "Erro ao deletar usuário" });
     }
   }
 }

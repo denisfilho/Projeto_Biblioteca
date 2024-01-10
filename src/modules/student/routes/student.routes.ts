@@ -6,8 +6,15 @@ export const StudentRoutes = (): Router => {
 
   //POST /students
   router.post("/", studentController.createStudent);
+
+  //GET /students
   router.get("/", studentController.listAllStudents);
+
+  //GET /students/:student_email
   router.get("/:student_email", studentController.findStudentByEmail);
+
+  //DELETE /students/:student_email
+  router.delete("/:student_email", studentController.deleteStudent);
 
   return router;
 };
