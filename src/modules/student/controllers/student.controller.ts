@@ -22,6 +22,19 @@ class StudentController {
       res.status(400).json({ ok: false, message: "Erro ao criar estudante" });
     }
   }
+  async listAllStudents(req: Request, res: Response) {
+    try {
+      const students = await AppDataSource.getRepository(Student).find({
+        select: ["cpf", "name", "password", "email"],
+      });
+      return res.status(201).json({ ok: true, students });
+    } catch (error) {
+      console.log("Error in listAllStudents");
+      return res
+        .status(400)
+        .json({ ok: false, message: "Erro ao listar todos os estudantes" });
+    }
+  }
 }
 
 export default new StudentController();

@@ -6,6 +6,7 @@ export const StudentRoutes = (): Router => {
 
   //POST /students
   router.post("/", studentController.createStudent);
+  router.get("/", studentController.listAllStudents);
 
   return router;
 };
