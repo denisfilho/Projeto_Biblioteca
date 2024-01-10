@@ -7,7 +7,7 @@ export const StudentRoutes = (): Router => {
   //POST /students
   router.post("/", studentController.createStudent);
   router.get("/", studentController.listAllStudents);
-  router.get("/:student_email", studentController.findStudentById);
+  router.get("/:student_email", studentController.findStudentByEmail);
 
   return router;
 };

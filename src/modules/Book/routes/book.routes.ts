@@ -5,6 +5,7 @@ export const BookRoutes = (): Router => {
   const route = Router();
 
   route.post("/", bookController.createBook);
+  route.get("/", bookController.listAllBooks);
 
   return route;
 };

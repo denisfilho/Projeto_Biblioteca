@@ -36,7 +36,7 @@ class StudentController {
     }
   }
 
-  async findStudentById(req: Request, res: Response) {
+  async findStudentByEmail(req: Request, res: Response) {
     try {
       const student = await AppDataSource.getRepository(Student).find({
         where: { email: req.params.student_email },

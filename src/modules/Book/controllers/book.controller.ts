@@ -24,6 +24,27 @@ class BookController {
         .json({ ok: false, message: "Erro ao criar usuário" });
     }
   }
+  async listAllBooks(req: Request, res: Response) {
+    try {
+      const books = await AppDataSource.getRepository(Book).find({
+        select: [
+          "ISBN",
+          "title",
+          "author",
+          "type",
+          "avaliable_copies",
+          "reserved_copies",
+          "reservations",
+        ],
+      });
+      return res.status(201).json({ ok: true, books });
+    } catch (error) {
+      console.log("Error in listAllBooks");
+      return res
+        .status(400)
+        .json({ ok: false, message: "Erro ao listar todos os livros" });
+    }
+  }
 }
 
 export default new BookController();
