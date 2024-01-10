@@ -45,6 +45,19 @@ class BookController {
         .json({ ok: false, message: "Erro ao listar todos os livros" });
     }
   }
+  async findBookByISBN(req: Request, res: Response) {
+    try {
+      const book = await AppDataSource.getRepository(Book).find({
+        where: { ISBN: req.params.book_isbn },
+      });
+      return res.status(201).json({ ok: true, book });
+    } catch (error) {
+      console.log("Error in findBookByISBN");
+      return res
+        .status(400)
+        .json({ ok: false, message: "Erro ao encontrar livro" });
+    }
+  }
 }
 
 export default new BookController();
