@@ -7,7 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Book } from "../../Book/entities/book.entity";
+import { Book } from "../../book/entities/book.entity";
 import { Student } from "../../student/entities/student.entity";
 
 @Entity("reservations")
@@ -16,15 +16,15 @@ export class Reservation {
   id: number;
 
   @Column()
-  book_id: number;
+  book_id: string;
 
   @Column()
-  student_id: number;
+  student_id: string;
 
   @CreateDateColumn()
   created_reservation: Date;
 
-  @ManyToOne(() => Student, (student) => student.reservations)
+  @ManyToOne(() => Book, (book) => book.reservations)
   @JoinColumn({ name: "book_id" })
   book: Book;
 
