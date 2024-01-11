@@ -78,6 +78,30 @@ class BookController {
       return res.status(500).send("Erro ao deletar livro");
     }
   }
+
+  async updateBook(req: Request, res: Response) {
+    try {
+      const { ISBN, title, author, type, avaliable_copies, reserved_copies } =
+        req.body;
+      const book = await AppDataSource.getRepository(Book).findOne({
+        where: { ISBN: req.params.book_isbn },
+      });
+      if (!book) {
+        return res.status(404).json("Livro não encontrado");
+      }
+      if (ISBN) book.ISBN = ISBN;
+      if (title) book.title = title;
+      if (author) book.author = author;
+      if (type) book.type = type;
+      if (avaliable_copies) book.avaliable_copies = avaliable_copies;
+      if (reserved_copies) book.reserved_copies = reserved_copies;
+
+      return res.status(201).json({ ok: true, book });
+    } catch (error) {
+      console.log("Error in updateBook");
+      return res.status(500).send("Erro ao atualizar livro");
+    }
+  }
 }
 
 export default new BookController();

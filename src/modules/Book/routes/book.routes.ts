@@ -16,5 +16,8 @@ export const BookRoutes = (): Router => {
   //DELETE /books/:book_isbn
   route.delete("/:book_isbn", bookController.deleteBook);
 
+  //UPDATE /books/:book_isbn
+  route.patch("/:book_isbn", bookController.updateBook);
+
   return route;
 };
