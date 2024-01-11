@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../../../services/database/app-data-source";
 import { Reservation } from "../entities/reservation.entity";
 import { Student } from "../../student/entities/student.entity";
+import { Book } from "../../book/entities/book.entity";
 
 class ReservationController {
   async createReservation(req: Request, res: Response) {
@@ -54,14 +55,41 @@ class ReservationController {
       if (reservations.length <= 0) {
         return res.status(404).json({
           ok: false,
-          message: `Não há reservas para o estudante ${student.name}`,
+          message: `Não há reservas para o estudante: ${student.name}`,
         });
       }
       console.log(`Reserves found! ${reservations}`);
       return res.status(201).json({ ok: true, reservations });
     } catch (error) {
       console.log("Error in listReservationsByStudent");
-      return res.status(500).send("Erro ao listar as reservas por estudante");
+      return res.status(500).send("Erro ao listar as reservas do estudante");
+    }
+  }
+
+  async listReservationsByBook(req: Request, res: Response) {
+    try {
+      const book = await AppDataSource.getRepository(Book).findOne({
+        where: { ISBN: req.params.book_isbn },
+      });
+      if (!book) {
+        return res
+          .status(404)
+          .json({ ok: false, message: "Erro ao encontrar livro" });
+      }
+      const reservations = await AppDataSource.getRepository(Reservation).find({
+        where: { book_id: req.params.book_isbn },
+      });
+      if (reservations.length <= 0) {
+        return res.status(404).json({
+          ok: false,
+          message: `Não há reservas para o livro: ${book.title}`,
+        });
+      }
+      console.log(`Reserves found! ${reservations}`);
+      return res.status(201).json({ ok: true, reservations });
+    } catch (error) {
+      console.log("Error in listReservationsByBook");
+      return res.status(500).send("Erro ao listar as reservas do livro");
     }
   }
 }

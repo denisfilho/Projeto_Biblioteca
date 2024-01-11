@@ -10,8 +10,17 @@ export const ReservationRoutes = (): Router => {
   // GET /reservations
   route.get("/", reservationController.listAllReservations);
 
-  // GET /reservations/:student_cpf
-  route.get("/:student_cpf", reservationController.listReservationsByStudent);
+  // GET /reservations/by_student/:student_cpf
+  route.get(
+    "/by_student/:student_cpf",
+    reservationController.listReservationsByStudent
+  );
+
+  // GET /reservations/by_book/:book_isbn
+  route.get(
+    "/by_book/:book_isbn",
+    reservationController.listReservationsByBook
+  );
 
   return route;
 };
