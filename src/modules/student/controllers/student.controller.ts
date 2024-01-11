@@ -72,6 +72,30 @@ class StudentController {
         .send({ ok: false, error: "Erro ao deletar usuário" });
     }
   }
+  async updateStudent(req: Request, res: Response) {
+    try {
+      const { cpf, name, password, email } = req.body;
+      const student = await AppDataSource.getRepository(Student).findOne({
+        where: { email: req.params.student_email },
+      });
+
+      if (!student) {
+        return res
+          .status(404)
+          .json({ ok: false, message: "Usuário não encontrado" });
+      }
+
+      if (cpf) student.cpf = cpf;
+      if (name) student.name = name;
+      if (password) student.password = password;
+      if (email) student.email = email;
+
+      return res.status(201).json({ ok: true, student });
+    } catch (error) {
+      console.log("Error in updateStudent");
+      return res.status(500).send("Erro ao atulizar estudante");
+    }
+  }
 }
 
 export default new StudentController();

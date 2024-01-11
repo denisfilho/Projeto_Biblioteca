@@ -16,5 +16,8 @@ export const StudentRoutes = (): Router => {
   //DELETE /students/:student_email
   router.delete("/:student_email", studentController.deleteStudent);
 
+  //UPDATE /students/:student_email
+  router.patch("/:student_email", studentController.updateStudent);
+
   return router;
 };
