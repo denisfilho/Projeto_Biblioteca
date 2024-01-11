@@ -58,6 +58,26 @@ class BookController {
         .json({ ok: false, message: "Erro ao encontrar livro" });
     }
   }
+  async deleteBook(req: Request, res: Response) {
+    try {
+      const book = await AppDataSource.getRepository(Book).findOne({
+        where: { ISBN: req.params.book_isbn },
+      });
+      if (!book) {
+        return res
+          .status(404)
+          .json({ ok: false, message: "Livro não encontrado" });
+      }
+      await AppDataSource.getRepository(Book).delete(book);
+      console.log(`Book ${book.title} deleted`);
+      return res
+        .status(201)
+        .json({ ok: true, message: "Livro deletado com sucessso" });
+    } catch (error) {
+      console.log("Error in deleteBook");
+      return res.status(500).send("Erro ao deletar livro");
+    }
+  }
 }
 
 export default new BookController();

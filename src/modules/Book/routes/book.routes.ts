@@ -10,8 +10,11 @@ export const BookRoutes = (): Router => {
   //GET /books
   route.get("/", bookController.listAllBooks);
 
-  //POST /books/:book_isbn
+  //GET /books/:book_isbn
   route.get("/:book_isbn", bookController.findBookByISBN);
+
+  //DELETE /books/:book_isbn
+  route.delete("/:book_isbn", bookController.deleteBook);
 
   return route;
 };
