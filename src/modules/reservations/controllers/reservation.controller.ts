@@ -21,11 +21,47 @@ class ReservationController {
         student_id: student.email,
       });
       console.log(`Reservation ${reservation.id} created`);
-      return res.status(201).json({ ok: true, reservation }); /**/
-      //return res.status(201).json({ ok: true });
+      return res.status(201).json({ ok: true, reservation });
     } catch (error) {
       console.log("Error in createReservation");
       return res.status(500).send("Erro ao criar reserva");
+    }
+  }
+  async listAllReservations(req: Request, res: Response) {
+    try {
+      const reservations = await AppDataSource.getRepository(Reservation).find({
+        select: ["id", "book_id", "student_id", "created_reservation"],
+      });
+      return res.status(201).json({ ok: true, reservations });
+    } catch (error) {
+      console.log("Error in listAllReservations");
+      return res.status(500).send("Erro ao listar todas as reservas");
+    }
+  }
+  async listReservationsByStudent(req: Request, res: Response) {
+    try {
+      const student = await AppDataSource.getRepository(Student).findOne({
+        where: { cpf: req.params.student_cpf },
+      });
+      if (!student) {
+        return res
+          .status(404)
+          .json({ ok: false, message: "Erro ao encontrar estudante" });
+      }
+      const reservations = await AppDataSource.getRepository(Reservation).find({
+        where: { student_id: student.email },
+      });
+      if (reservations.length <= 0) {
+        return res.status(404).json({
+          ok: false,
+          message: `Não há reservas para o estudante ${student.name}`,
+        });
+      }
+      console.log(`Reserves found! ${reservations}`);
+      return res.status(201).json({ ok: true, reservations });
+    } catch (error) {
+      console.log("Error in listReservationsByStudent");
+      return res.status(500).send("Erro ao listar as reservas por estudante");
     }
   }
 }
