@@ -92,6 +92,26 @@ class ReservationController {
       return res.status(500).send("Erro ao listar as reservas do livro");
     }
   }
+  async deleteReservation(req: Request, res: Response) {
+    try {
+      const reservation = await AppDataSource.getRepository(
+        Reservation
+      ).findOne({
+        where: { id: +req.params.reservation_id },
+      });
+      if (!reservation) {
+        return res
+          .status(404)
+          .json({ ok: false, message: "Reserva não encontrada" });
+      }
+      await AppDataSource.getRepository(Reservation).remove(reservation);
+      console.log(`Reserva deletada: ${reservation.id}`);
+      return res.status(201).json({ ok: true, message: "Reserva deletada" });
+    } catch (error) {
+      console.log("Error in deleteReservation");
+      return res.status(500).send("Erro ao deletar reserva");
+    }
+  }
 }
 
 export default new ReservationController();

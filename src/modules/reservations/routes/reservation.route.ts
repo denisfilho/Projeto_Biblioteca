@@ -22,5 +22,8 @@ export const ReservationRoutes = (): Router => {
     reservationController.listReservationsByBook
   );
 
+  // DELETE /reservations/:reservation_id
+  route.delete("/:reservation_id", reservationController.deleteReservation);
+
   return route;
 };
