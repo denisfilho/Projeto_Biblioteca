@@ -1,0 +1,177 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Biblioteca API",
+    "version": "1.0.0",
+    "description": "Projeto de reservas de uma Biblioteca"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "API em deploy no render"
+    },
+    {
+      "url": "https://biblioteca-api.onrender.com",
+      "description": "API em deploy no render"
+    }
+  ],
+  "paths": {
+    "/students": {
+      "post": {
+        "summary": "Cadastro de Estudantes",
+        "description": "Responsável para novos usuários estudantes",
+        "tags": ["Students"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Student"
+              },
+              "examples": {
+                "Estudante": {
+                  "value": {
+                    "cpf": "123.456.789-10",
+                    "name": "Denis",
+                    "password": "denis123",
+                    "email": "denis@email.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Estudante criado com sucesso"
+          },
+          "400": {
+            "description": "Erro ao criar estudante"
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os Estudantes",
+        "tags": ["Students"],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Erro ao listar todos os estudantes"
+          }
+        }
+      }
+    },
+    "/students/{email}": {
+      "get": {
+        "summary": "Encontrar Estudante",
+        "description": "Rota que Busca Estudante por Email",
+        "tags": ["Students"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "Email do Estudante para Busca",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Estudante Encontrado"
+          },
+          "500": {
+            "description": "Erro ao encontrar estudante"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar Estudante",
+        "description": "Rota que Atualiza Estudante por Email",
+        "tags": ["Students"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "Email do Estudante para Atualizar",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Student"
+              },
+              "examples": {
+                "Estudante": {
+                  "value": {
+                    "cpf": "123.456.789-10",
+                    "name": "Denis",
+                    "password": "denis123",
+                    "email": "denis@email.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Estudante atualizado"
+          },
+          "404": {
+            "description": "Estudante não encontrado"
+          },
+          "500": {
+            "description": "Erro ao atualizar estudante"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar Estudante",
+        "description": "Rota que Exclui Estudante por Email",
+        "tags": ["Students"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "Email do Estudante para Excluir",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Estudante deletado"
+          },
+          "404": {
+            "description": "Estudante não encontrado"
+          },
+          "500": {
+            "description": "Erro ao deletar estudante"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Student": {
+        "type": "object",
+        "properties": {
+          "cpf": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
