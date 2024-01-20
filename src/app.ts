@@ -8,9 +8,9 @@ import swaggerDoc from "./swagger.json";
 export const app = express();
 app.use(express.json()); //receber JSON
 
-//app.get("/", (req, res) => {
-//  res.redirect("/api-docs");
-//});
+app.get("/", (req, res) => {
+  res.redirect("/api-docs");
+});
 
 app.use("/students", StudentRoutes());
 app.use("/books", BookRoutes());
