@@ -7,11 +7,11 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3001",
+      "url": "http://localhost:5432",
       "description": "API em deploy no render"
     },
     {
-      "url": "https://biblioteca-api.onrender.com",
+      "url": "https://biblioteca-api-zjak.onrender.com.",
       "description": "API em deploy no render"
     }
   ],
@@ -42,10 +42,10 @@
         },
         "responses": {
           "201": {
-            "description": "Estudante criado com sucesso"
+            "description": "Estudante cadastrado com sucesso"
           },
-          "400": {
-            "description": "Erro ao criar estudante"
+          "500": {
+            "description": "Erro ao cadastrar estudante"
           }
         }
       },
@@ -56,7 +56,7 @@
           "201": {
             "description": "Success"
           },
-          "400": {
+          "500": {
             "description": "Erro ao listar todos os estudantes"
           }
         }
@@ -151,8 +151,272 @@
           }
         }
       }
+    },
+    "/books": {
+      "post": {
+        "summary": "Cadastro de Livros",
+        "description": "Responsável para novos livros",
+        "tags": ["Books"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              },
+              "examples": {
+                "Livro": {
+                  "value": {
+                    "ISBN": "9788594540300",
+                    "title": "O Segredo dos Corpos",
+                    "author": "Vincent Di Maio e Ron Franscell",
+                    "type": "CRIME SCENE",
+                    "avaliable_copies": 10
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Livro cadastrado com sucesso"
+          },
+          "500": {
+            "description": "Erro ao cadastrar livro"
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os Livros",
+        "tags": ["Books"],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Erro ao listar todos os livros"
+          }
+        }
+      }
+    },
+    "/books/{book_isbn}": {
+      "get": {
+        "summary": "Encontrar Livro",
+        "description": "Rota que Busca Estudante por ISBN",
+        "tags": ["Books"],
+        "parameters": [
+          {
+            "name": "book_isbn",
+            "in": "path",
+            "description": "ISBN do Livro para Busca",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Livro Encontrado"
+          },
+          "500": {
+            "description": "Erro ao encontrar livro"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualizar Livro",
+        "description": "Rota que Atualiza Livro por ISBN",
+        "tags": ["Books"],
+        "parameters": [
+          {
+            "name": "book_isbn",
+            "in": "path",
+            "description": "ISBN do Livro para Busca",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              },
+              "examples": {
+                "Livro": {
+                  "value": {
+                    "ISBN": "9788594540300",
+                    "title": "O Segredo dos Corpos",
+                    "author": "Vincent Di Maio e Ron Franscell",
+                    "type": "CRIME",
+                    "avaliable_copies": 11
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Livro atualizado"
+          },
+          "404": {
+            "description": "Livro não encontrado"
+          },
+          "500": {
+            "description": "Erro ao atualizar livro"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar Livro",
+        "description": "Rota que Exclui Livro por ISBN",
+        "tags": ["Books"],
+        "parameters": [
+          {
+            "name": "book_isbn",
+            "in": "path",
+            "description": "ISBN do Livro para Busca",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Livro deletado"
+          },
+          "404": {
+            "description": "Livro não encontrado"
+          },
+          "500": {
+            "description": "Erro ao deletar livro"
+          }
+        }
+      }
+    },
+    "/reservations": {
+      "post": {
+        "summary": "Cadastro de Reserva",
+        "description": "Responsável para novas Reservas",
+        "tags": ["Reservations"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reservation"
+              },
+              "examples": {
+                "Livro": {
+                  "value": {
+                    "book_isbn": "9788594540300",
+                    "student_cpf": "123.456.789-10"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reserva cadastrada com sucesso"
+          },
+          "404": {
+            "description": "Estudante/Livro não encontrado"
+          },
+          "500": {
+            "description": "Erro ao cadastrar reserva"
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos as Reservas",
+        "tags": ["Reservations"],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Erro ao listar todos as reservas"
+          }
+        }
+      }
+    },
+    "/reservations/by_student/{student_cpf}": {
+      "get": {
+        "summary": "Encontrar Reservas do Estudante",
+        "description": "Rota que Busca Reserva pelo CPF do Estudante",
+        "tags": ["Reservations"],
+        "parameters": [
+          {
+            "name": "student_cpf",
+            "in": "path",
+            "description": "CPF do Estudante para Busca",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "Erro ao encontrar estudante ou Não há reservas para o estudante"
+          },
+          "500": {
+            "description": "Erro ao listar as reservas do estudante"
+          }
+        }
+      }
+    },
+    "/reservations/by_book/{book_isbn}": {
+      "get": {
+        "summary": "Encontrar Reservas do Livro",
+        "description": "Rota que Busca Reserva pelo ISBN do Livro",
+        "tags": ["Reservations"],
+        "parameters": [
+          {
+            "name": "book_isbn",
+            "in": "path",
+            "description": "ISBN do Livro para Busca",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "Erro ao encontrar livro ou Não há reservas para o livro"
+          },
+          "500": {
+            "description": "Erro ao listar as reservas do livro"
+          }
+        }
+      }
+    },
+    "/reservations/{reservation_id}": {
+      "delete": {
+        "summary": "Excluir Reservas",
+        "description": "Rota que Exclui Reserva pelo Id",
+        "tags": ["Reservations"],
+        "parameters": [
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "description": "Id da Reserva para Busca",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Reserva excluída"
+          },
+          "404": {
+            "description": "Reserva não encontrada"
+          },
+          "500": {
+            "description": "Erro ao deletar reserva"
+          }
+        }
+      }
     }
   },
+
   "components": {
     "schemas": {
       "Student": {
@@ -168,6 +432,37 @@
             "type": "string"
           },
           "email": {
+            "type": "string"
+          }
+        }
+      },
+      "Book": {
+        "type": "object",
+        "properties": {
+          "ISBN": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "avaliable_copies": {
+            "type": "integer"
+          }
+        }
+      },
+      "Reservations": {
+        "type": "object",
+        "properties": {
+          "book_isbn": {
+            "type": "string"
+          },
+          "student_cpf": {
             "type": "string"
           }
         }

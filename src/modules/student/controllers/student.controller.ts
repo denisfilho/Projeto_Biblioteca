@@ -16,10 +16,12 @@ class StudentController {
       console.log(`Student created: ${student}`);
       res
         .status(201)
-        .json({ ok: true, message: "Estudante criado com sucesso" });
+        .json({ ok: true, message: "Estudante cadastrado com sucesso" });
     } catch (error) {
       console.log(error, "Error in createStudent");
-      res.status(400).json({ ok: false, message: "Erro ao criar estudante" });
+      res
+        .status(500)
+        .json({ ok: false, message: "Erro ao cadastrar estudante" });
     }
   }
   async listAllStudents(req: Request, res: Response) {
@@ -31,7 +33,7 @@ class StudentController {
     } catch (error) {
       console.log("Error in listAllStudents");
       return res
-        .status(400)
+        .status(500)
         .json({ ok: false, message: "Erro ao listar todos os estudantes" });
     }
   }

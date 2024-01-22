@@ -17,6 +17,14 @@ class ReservationController {
           .json({ ok: false, message: "Estudante não encontrado" });
       }
       console.log(`student.email: ${student.email}`);
+      const book = await AppDataSource.getRepository(Book).findOne({
+        where: { ISBN: book_isbn },
+      });
+      if (!book) {
+        return res
+          .status(404)
+          .json({ ok: false, message: "Livro não encontrado" });
+      }
       const reservation = await AppDataSource.getRepository(Reservation).save({
         book_id: book_isbn,
         student_id: student.email,

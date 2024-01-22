@@ -20,8 +20,8 @@ class BookController {
     } catch (error) {
       console.log("Error in create book");
       return res
-        .status(400)
-        .json({ ok: false, message: "Erro ao criar usuário" });
+        .status(500)
+        .json({ ok: false, message: "Erro ao cadastrar livro" });
     }
   }
   async listAllBooks(req: Request, res: Response) {
@@ -54,7 +54,7 @@ class BookController {
     } catch (error) {
       console.log("Error in findBookByISBN");
       return res
-        .status(400)
+        .status(500)
         .json({ ok: false, message: "Erro ao encontrar livro" });
     }
   }
